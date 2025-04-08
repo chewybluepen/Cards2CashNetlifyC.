@@ -1,11 +1,16 @@
 "use client"
 
-import type React from "react"
-
-import { useState } from "react"
+import React, { useState, Suspense } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle
+} from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -13,7 +18,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { ArrowLeft, CheckCircle, Info, Lock, Mail, Phone } from "lucide-react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
-export default function ForgotPassword() {
+function ForgotPasswordForm() {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
   const [status, setStatus] = useState<null | "success" | "error">(null)
@@ -137,3 +142,11 @@ export default function ForgotPassword() {
   )
 }
 
+// Export the form inside Suspense for compliance with app router and client hook usage
+export default function ForgotPasswordPage() {
+  return (
+    <Suspense fallback={<div className="text-center p-4">Loading...</div>}>
+      <ForgotPasswordForm />
+    </Suspense>
+  )
+}
