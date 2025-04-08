@@ -270,6 +270,7 @@ export default function ConvertPage() {
                       currency={toCurrencyData.code}
                       options={{ style: 'code', decimalPlaces: 4 }}
                     />
+                  )
                 </p>
                 <p className="mt-2">Last updated: March 27, 2025</p>
               </div>
