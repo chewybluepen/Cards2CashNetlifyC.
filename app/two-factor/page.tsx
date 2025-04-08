@@ -1,8 +1,6 @@
 "use client"
 
-import type React from "react"
-
-import { useState } from "react"
+import { useState, Suspense } from "react"
 import Link from "next/link"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -13,17 +11,15 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { ArrowLeft, CheckCircle, Info, QrCode, Shield, Smartphone } from "lucide-react"
 import { BottomNavigation } from "@/components/bottom-navigation"
-// Import the CelebrationAnimation component
 import { CelebrationAnimation } from "@/components/ui/celebration-animation"
 
-export default function TwoFactorAuthentication() {
+export function TwoFactorAuthentication() {
   const [isLoading, setIsLoading] = useState(false)
   const [status, setStatus] = useState<null | "success" | "error">(null)
   const [twoFactorEnabled, setTwoFactorEnabled] = useState(false)
   const [activeTab, setActiveTab] = useState("app")
   const [verificationCode, setVerificationCode] = useState("")
   const [showQRCode, setShowQRCode] = useState(false)
-  // Add state for celebration
   const [showCelebration, setShowCelebration] = useState(false)
 
   const handleToggle2FA = (checked: boolean) => {
@@ -31,14 +27,10 @@ export default function TwoFactorAuthentication() {
       setShowQRCode(true)
     } else {
       setIsLoading(true)
-
-      // Simulate API call to disable 2FA
       setTimeout(() => {
         setIsLoading(false)
         setTwoFactorEnabled(false)
         setStatus("success")
-
-        // Reset status after 3 seconds
         setTimeout(() => {
           setStatus(null)
         }, 3000)
@@ -46,12 +38,10 @@ export default function TwoFactorAuthentication() {
     }
   }
 
-  // Update the handleVerify function
   const handleVerify = (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
 
-    // Simulate API call
     setTimeout(() => {
       setIsLoading(false)
 
@@ -59,12 +49,11 @@ export default function TwoFactorAuthentication() {
         setTwoFactorEnabled(true)
         setShowQRCode(false)
         setStatus("success")
-        setShowCelebration(true) // Show celebration on success
+        setShowCelebration(true)
       } else {
         setStatus("error")
       }
 
-      // Reset status after 3 seconds
       setTimeout(() => {
         setStatus(null)
       }, 3000)
@@ -130,14 +119,12 @@ export default function TwoFactorAuthentication() {
                   <TabsTrigger value="app">Authenticator App</TabsTrigger>
                   <TabsTrigger value="sms">SMS</TabsTrigger>
                 </TabsList>
-
                 <TabsContent value="app" className="space-y-4">
                   <div className="flex justify-center py-4">
                     <div className="rounded-lg border bg-white p-2">
                       <QrCode className="h-48 w-48 text-blue-600" />
                     </div>
                   </div>
-
                   <div className="space-y-2 text-center">
                     <p className="text-sm text-gray-500">
                       Scan this QR code with your authenticator app (Google Authenticator, Authy, etc.)
@@ -147,12 +134,10 @@ export default function TwoFactorAuthentication() {
                     </p>
                   </div>
                 </TabsContent>
-
                 <TabsContent value="sms" className="space-y-4">
                   <div className="flex justify-center py-4">
                     <Smartphone className="h-24 w-24 text-blue-600" />
                   </div>
-
                   <div className="space-y-2 text-center">
                     <p className="text-sm text-gray-500">
                       We'll send a verification code to your phone number each time you log in.
@@ -186,7 +171,6 @@ export default function TwoFactorAuthentication() {
                     <AlertDescription>Two-factor authentication has been enabled for your account.</AlertDescription>
                   </Alert>
                 )}
-
                 {status === "error" && (
                   <Alert variant="destructive">
                     <Info className="h-4 w-4" />
@@ -194,7 +178,6 @@ export default function TwoFactorAuthentication() {
                     <AlertDescription>Invalid verification code. Please try again.</AlertDescription>
                   </Alert>
                 )}
-
                 <div className="flex space-x-2">
                   <Button
                     type="submit"
@@ -229,7 +212,6 @@ export default function TwoFactorAuthentication() {
                   <div className="rounded bg-white p-2">IJKL-1234-MNOP</div>
                 </div>
               </div>
-
               <div className="rounded-md bg-amber-50 p-3 text-sm text-amber-800">
                 <div className="flex">
                   <div className="flex-shrink-0">
@@ -243,7 +225,6 @@ export default function TwoFactorAuthentication() {
                   </div>
                 </div>
               </div>
-
               <div className="flex space-x-2">
                 <Button variant="outline" className="flex-1">
                   Download Codes
@@ -262,3 +243,10 @@ export default function TwoFactorAuthentication() {
   )
 }
 
+export default function PageWrapper() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <TwoFactorAuthentication />
+    </Suspense>
+  )
+}
