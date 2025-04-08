@@ -265,7 +265,7 @@ export default function ConvertPage() {
                             (exchangeRates[fromCurrency]?.["USD"] || 1 / (exchangeRates["USD"]?.[fromCurrency] || 1)) *
                             (exchangeRates["USD"]?.[toCurrency] || 1 / (exchangeRates[toCurrency]?.["USD"] || 1))
                           )
-                        : 1.0000\
+                        : 1.0000
                     }
                     currency={toCurrencyData.code}
                     options={{ style: 'code', decimalPlaces: 4 }}
