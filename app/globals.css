@@ -1,0 +1,462 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 0%; /* Netflix Black */
+    --foreground: 0 0% 100%; /* Netflix White */
+
+    --card: 0 0% 8%; /* Netflix Dark Gray */
+    --card-foreground: 0 0% 100%; /* Netflix White */
+
+    --popover: 0 0% 8%; /* Netflix Dark Gray */
+    --popover-foreground: 0 0% 100%; /* Netflix White */
+
+    --primary: 357 92% 47%; /* Netflix Red */
+    --primary-foreground: 0 0% 100%; /* Netflix White */
+
+    --secondary: 0 0% 8%; /* Netflix Dark Gray */
+    --secondary-foreground: 0 0% 100%; /* Netflix White */
+
+    --accent: 0 0% 70%; /* Netflix Light Gray */
+    --accent-foreground: 0 0% 100%; /* Netflix White */
+
+    --muted: 0 0% 15%; /* Netflix Muted Gray */
+    --muted-foreground: 0 0% 85%; /* Improved contrast from 70% to 85% */
+
+    --destructive: 0 84.2% 60.2%; /* Red */
+    --destructive-foreground: 0 0% 100%; /* White */
+
+    --border: 0 0% 15%; /* Netflix Border Gray */
+    --input: 0 0% 15%; /* Netflix Input Gray */
+    --ring: 357 92% 47%; /* Netflix Red */
+
+    --radius: 0.25rem; /* Netflix uses more subtle rounded corners */
+  }
+
+  .dark {
+    --background: 0 0% 0%; /* Netflix Black */
+    --foreground: 0 0% 100%; /* Netflix White */
+
+    --card: 0 0% 8%; /* Netflix Dark Gray */
+    --card-foreground: 0 0% 100%; /* Netflix White */
+
+    --popover: 0 0% 8%; /* Netflix Dark Gray */
+    --popover-foreground: 0 0% 100%; /* Netflix White */
+
+    --primary: 357 92% 47%; /* Netflix Red */
+    --primary-foreground: 0 0% 100%; /* Netflix White */
+
+    --secondary: 0 0% 8%; /* Netflix Dark Gray */
+    --secondary-foreground: 0 0% 100%; /* Netflix White */
+
+    --accent: 0 0% 70%; /* Netflix Light Gray */
+    --accent-foreground: 0 0% 100%; /* Netflix White */
+
+    --muted: 0 0% 15%; /* Netflix Muted Gray */
+    --muted-foreground: 0 0% 85%; /* Improved contrast from 70% to 85% */
+
+    --destructive: 0 84.2% 60.2%; /* Red */
+    --destructive-foreground: 0 0% 100%; /* White */
+
+    --border: 0 0% 15%; /* Netflix Border Gray */
+    --input: 0 0% 15%; /* Netflix Input Gray */
+    --ring: 357 92% 47%; /* Netflix Red */
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+/* Netflix-inspired styling with improved contrast */
+.netflix-container {
+  background-color: #000000;
+  color: white;
+}
+
+.netflix-card {
+  background-color: #141414;
+  color: white;
+  border: 0;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease;
+}
+.netflix-card:hover {
+  transform: scale(1.05);
+}
+
+.netflix-button {
+  background-color: #e50914;
+  color: white;
+  transition: background-color 0.3s ease;
+}
+.netflix-button:hover {
+  background-color: #b30710;
+}
+
+.netflix-input {
+  background-color: #333333;
+  color: white;
+  border: 0;
+}
+.netflix-input:focus {
+  box-shadow: 0 0 0 2px #e50914;
+}
+
+.netflix-gradient {
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0) 100%);
+}
+
+.netflix-header {
+  background: linear-gradient(to bottom, #000000, transparent);
+}
+
+.netflix-footer {
+  background-color: #141414;
+  color: #d9d9d9; /* Improved from #b3b3b3 for better contrast */
+}
+
+.netflix-hover {
+  transition: color 0.3s ease;
+}
+.netflix-hover:hover {
+  color: white;
+}
+
+.netflix-dropdown {
+  background-color: #141414;
+  border: 1px solid #333333;
+  color: white;
+}
+
+.netflix-dropdown-item {
+  transition: background-color 0.3s ease;
+}
+.netflix-dropdown-item:hover {
+  background-color: #333333;
+}
+
+/* Enhanced button and toggle styling for better contrast */
+.btn-primary,
+button[class*="bg-primary"],
+button[class*="bg-red"],
+.toggle-active,
+[data-state="checked"] {
+  color: white !important;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+/* Improved contrast for disabled buttons */
+button:disabled,
+.button:disabled,
+[disabled] {
+  opacity: 0.7 !important; /* Increased from default 0.5 for better visibility */
+}
+
+/* Improved contrast for form elements */
+.form-label {
+  color: #000000; /* Ensure labels are black on light backgrounds */
+}
+
+.dark .form-label {
+  color: #ffffff; /* Ensure labels are white on dark backgrounds */
+}
+
+.form-helper-text {
+  color: #595959 !important; /* Darker than default gray for better contrast */
+}
+
+.dark .form-helper-text {
+  color: #bfbfbf !important; /* Lighter than default gray for better contrast in dark mode */
+}
+
+/* Improved contrast for links */
+a:not([class]),
+.link {
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+
+a:hover:not([class]),
+.link:hover {
+  text-decoration-thickness: 2px;
+}
+
+/* Custom animations and transitions */
+.page-transition-enter {
+  opacity: 0;
+  transform: translateY(20px);
+}
+.page-transition-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 300ms, transform 300ms;
+}
+.page-transition-exit {
+  opacity: 1;
+  transform: translateY(0);
+}
+.page-transition-exit-active {
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: opacity 300ms, transform 300ms;
+}
+
+/* Button animations */
+.button-press {
+  transition: transform 0.1s ease-in-out;
+}
+.button-press:active {
+  transform: scale(0.95);
+}
+
+/* Form validation animations */
+.input-success {
+  animation: input-success-pulse 1s ease-in-out;
+}
+.input-error {
+  animation: input-error-shake 0.5s ease-in-out;
+}
+
+@keyframes input-success-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(229, 9, 20, 0);
+  }
+  50% {
+    box-shadow: 0 0 0 4px rgba(229, 9, 20, 0.3);
+  }
+}
+
+@keyframes input-error-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translateX(-5px);
+  }
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translateX(5px);
+  }
+}
+
+/* Card hover effects */
+.card-hover-effect {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.card-hover-effect:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+}
+
+/* Loader animation */
+.loader {
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top: 3px solid #e50914;
+  width: 24px;
+  height: 24px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Notification badge animation */
+.notification-badge {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.95);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(0.95);
+    opacity: 1;
+  }
+}
+
+/* Page transitions */
+.fade-enter {
+  opacity: 0;
+}
+.fade-enter-active {
+  opacity: 1;
+  transition: opacity 300ms;
+}
+.fade-exit {
+  opacity: 1;
+}
+.fade-exit-active {
+  opacity: 0;
+  transition: opacity 300ms;
+}
+
+/* Slide transitions */
+.slide-enter {
+  transform: translateX(100%);
+}
+.slide-enter-active {
+  transform: translateX(0);
+  transition: transform 300ms;
+}
+.slide-exit {
+  transform: translateX(0);
+}
+.slide-exit-active {
+  transform: translateX(-100%);
+  transition: transform 300ms;
+}
+
+/* Celebration animations */
+.confetti-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Success animation */
+.success-animation {
+  transform: scale(1.4);
+}
+
+/* Netflix-specific animations */
+.netflix-scale {
+  transition: transform 0.3s ease;
+}
+.netflix-scale:hover {
+  transform: scale(1.05);
+}
+
+.netflix-title-animation {
+  animation: netflix-title 1s ease-in-out;
+}
+
+@keyframes netflix-title {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Netflix dropdown animation */
+.netflix-dropdown-animation {
+  animation: netflix-dropdown 0.3s ease-out;
+}
+
+@keyframes netflix-dropdown {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/* Facial recognition styles */
+.face-scan-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 2px solid var(--primary);
+  animation: face-scan 2s infinite;
+}
+
+@keyframes face-scan {
+  0% {
+    box-shadow: 0 0 0 0 rgba(var(--primary), 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(var(--primary), 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(var(--primary), 0);
+  }
+}
+
+/* Accessibility improvements */
+.high-contrast-text {
+  font-weight: 500 !important;
+}
+
+/* Improved focus styles for better keyboard navigation */
+:focus-visible {
+  outline: 2px solid #e50914 !important;
+  outline-offset: 2px !important;
+}
+
+/* Improved contrast for charts and data visualizations */
+.chart-line {
+  stroke-width: 2px !important; /* Thicker lines for better visibility */
+}
+
+.chart-grid {
+  stroke: #555555 !important; /* Darker grid lines */
+}
+
+.chart-label {
+  fill: #ffffff !important; /* Ensure labels are visible */
+  font-weight: 500 !important;
+}
+
+/* Improved contrast for status indicators */
+.status-indicator {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Improved contrast for tabs */
+[role="tab"][data-state="active"] {
+  font-weight: 600 !important;
+}
+
+[role="tab"]:not([data-state="active"]) {
+  color: #bfbfbf !important; /* Lighter than default for better contrast */
+}
+
+/* Improved contrast for tooltips */
+[role="tooltip"] {
+  background-color: rgba(0, 0, 0, 0.9) !important;
+  color: white !important;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
