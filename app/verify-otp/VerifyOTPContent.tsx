@@ -1,9 +1,9 @@
-"use client"
+'use client'
 
-import type React from "react"
-import { useState, useRef, useEffect } from "react"
-import { useRouter } from "next/navigation"
-import Link from "next/link"
+import type React from 'react'
+import { useState, useRef, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import {
   Card,
   CardContent,
@@ -11,15 +11,27 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
-import { ArrowLeft, Info, Lock, MessageSquare } from "lucide-react"
+} from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from '@/components/ui/alert'
+import {
+  ArrowLeft,
+  Info,
+  Lock,
+  MessageSquare,
+} from 'lucide-react'
 
-export default function VerifyOTPContent() {
+// 🛡️ Prevent static pre-rendering (force dynamic rendering)
+export const dynamic = 'force-dynamic'
+
+export default function VerifyOTP() {
   const router = useRouter()
-  const [otp, setOtp] = useState<string[]>(Array(6).fill(""))
+  const [otp, setOtp] = useState<string[]>(Array(6).fill(''))
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [resendDisabled, setResendDisabled] = useState(true)
@@ -48,17 +60,17 @@ export default function VerifyOTPContent() {
   }
 
   const handleKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Backspace" && !otp[index] && index > 0) {
+    if (e.key === 'Backspace' && !otp[index] && index > 0) {
       inputRefs.current[index - 1]?.focus()
     }
   }
 
   const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
     e.preventDefault()
-    const pastedData = e.clipboardData.getData("text/plain").trim()
+    const pastedData = e.clipboardData.getData('text/plain').trim()
 
     if (/^\d{6}$/.test(pastedData)) {
-      const newOtp = pastedData.split("")
+      const newOtp = pastedData.split('')
       setOtp(newOtp)
       inputRefs.current[5]?.focus()
     }
@@ -67,8 +79,11 @@ export default function VerifyOTPContent() {
   const handleResendOTP = () => {
     setResendDisabled(true)
     setCountdown(30)
-    // Simulate resend
-    setTimeout(() => {}, 1000)
+
+    // Simulated OTP resend delay
+    setTimeout(() => {
+      // Show success message
+    }, 1000)
   }
 
   const handleVerify = (e: React.FormEvent) => {
@@ -76,14 +91,14 @@ export default function VerifyOTPContent() {
     setIsLoading(true)
     setError(null)
 
-    const otpValue = otp.join("")
+    const otpValue = otp.join('')
 
     setTimeout(() => {
       setIsLoading(false)
-      if (otpValue === "123456") {
-        router.push("/dashboard")
+      if (otpValue === '123456') {
+        router.push('/dashboard')
       } else {
-        setError("Invalid verification code. Please try again.")
+        setError('Invalid verification code. Please try again.')
       }
     }, 1500)
   }
@@ -114,8 +129,7 @@ export default function VerifyOTPContent() {
               </div>
 
               <p className="text-center text-sm text-gray-500">
-                Enter the code sent to{" "}
-                <span className="font-medium">+592 XXX XXXX</span>
+                Enter the code sent to <span className="font-medium">+592 XXX XXXX</span>
               </p>
 
               <div className="flex justify-center space-x-2">
@@ -146,7 +160,7 @@ export default function VerifyOTPContent() {
 
               <div className="text-center">
                 <p className="text-sm text-gray-500">
-                  Didn't receive the code?{" "}
+                  Didn't receive the code?{' '}
                   <Button
                     type="button"
                     variant="link"
@@ -154,7 +168,7 @@ export default function VerifyOTPContent() {
                     onClick={handleResendOTP}
                     disabled={resendDisabled}
                   >
-                    {resendDisabled ? `Resend in ${countdown}s` : "Resend Code"}
+                    {resendDisabled ? `Resend in ${countdown}s` : 'Resend Code'}
                   </Button>
                 </p>
               </div>
@@ -165,7 +179,7 @@ export default function VerifyOTPContent() {
                 className="w-full bg-blue-600 hover:bg-blue-700"
                 disabled={isLoading || otp.some((digit) => !digit)}
               >
-                {isLoading ? "Verifying..." : "Verify"}
+                {isLoading ? 'Verifying...' : 'Verify'}
               </Button>
             </CardFooter>
           </form>
