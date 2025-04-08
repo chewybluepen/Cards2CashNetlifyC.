@@ -2,7 +2,14 @@
 
 import React, { useState, Suspense } from "react"
 import Link from "next/link"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -47,7 +54,7 @@ export default function Profile() {
   }
 
   return (
-    <Suspense fallback={<div>Loading profile...</div>}>
+    <Suspense fallback={<div className="flex min-h-screen items-center justify-center">Loading Profile…</div>}>
       <div className="flex min-h-screen flex-col bg-gray-50">
         <CelebrationAnimation
           show={showCelebration}
@@ -79,14 +86,7 @@ export default function Profile() {
                 }
               }}
             >
-              {isEditing ? (
-                "Cancel"
-              ) : (
-                <>
-                  <Pencil className="mr-1 h-4 w-4" />
-                  Edit
-                </>
-              )}
+              {isEditing ? "Cancel" : (<><Pencil className="mr-1 h-4 w-4" />Edit</>)}
             </Button>
           </div>
         </header>
