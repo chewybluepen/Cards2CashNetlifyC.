@@ -1,5 +1,6 @@
 "use client"
 
+import { Suspense } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -7,7 +8,7 @@ import { Button } from "@/components/ui/button"
 import { ArrowLeft, Globe, Shield, Zap, Users, ExternalLink } from "lucide-react"
 import { BottomNavigation } from "@/components/bottom-navigation"
 
-export default function AboutUs() {
+function AboutUsContent() {
   return (
     <div className="flex min-h-screen flex-col bg-gray-50">
       <header className="sticky top-0 z-10 bg-white p-4 shadow-sm">
@@ -62,56 +63,36 @@ export default function AboutUs() {
             <CardTitle>Our Values</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="flex items-start space-x-3">
-              <div className="rounded-full bg-blue-100 p-2">
-                <Globe className="h-5 w-5 text-blue-600" />
+            {[
+              {
+                icon: <Globe className="h-5 w-5 text-blue-600" />,
+                title: "Accessibility",
+                desc: "Making global financial services accessible to everyone, regardless of location or banking status.",
+              },
+              {
+                icon: <Shield className="h-5 w-5 text-blue-600" />,
+                title: "Security",
+                desc: "Protecting our users' data and funds with industry-leading security measures and transparent practices.",
+              },
+              {
+                icon: <Zap className="h-5 w-5 text-blue-600" />,
+                title: "Innovation",
+                desc: "Continuously improving our platform to provide cutting-edge financial solutions that meet the evolving needs of our users.",
+              },
+              {
+                icon: <Users className="h-5 w-5 text-blue-600" />,
+                title: "Community",
+                desc: "Building a supportive community that empowers users to achieve financial freedom and participate in the global economy.",
+              },
+            ].map((value, idx) => (
+              <div className="flex items-start space-x-3" key={idx}>
+                <div className="rounded-full bg-blue-100 p-2">{value.icon}</div>
+                <div>
+                  <h3 className="font-medium">{value.title}</h3>
+                  <p className="text-sm text-gray-600">{value.desc}</p>
+                </div>
               </div>
-              <div>
-                <h3 className="font-medium">Accessibility</h3>
-                <p className="text-sm text-gray-600">
-                  Making global financial services accessible to everyone, regardless of location or banking status.
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-start space-x-3">
-              <div className="rounded-full bg-blue-100 p-2">
-                <Shield className="h-5 w-5 text-blue-600" />
-              </div>
-              <div>
-                <h3 className="font-medium">Security</h3>
-                <p className="text-sm text-gray-600">
-                  Protecting our users' data and funds with industry-leading security measures and transparent
-                  practices.
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-start space-x-3">
-              <div className="rounded-full bg-blue-100 p-2">
-                <Zap className="h-5 w-5 text-blue-600" />
-              </div>
-              <div>
-                <h3 className="font-medium">Innovation</h3>
-                <p className="text-sm text-gray-600">
-                  Continuously improving our platform to provide cutting-edge financial solutions that meet the evolving
-                  needs of our users.
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-start space-x-3">
-              <div className="rounded-full bg-blue-100 p-2">
-                <Users className="h-5 w-5 text-blue-600" />
-              </div>
-              <div>
-                <h3 className="font-medium">Community</h3>
-                <p className="text-sm text-gray-600">
-                  Building a supportive community that empowers users to achieve financial freedom and participate in
-                  the global economy.
-                </p>
-              </div>
-            </div>
+            ))}
           </CardContent>
         </Card>
 
@@ -168,3 +149,10 @@ export default function AboutUs() {
   )
 }
 
+export default function AboutPageWrapper() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <AboutUsContent />
+    </Suspense>
+  )
+}
