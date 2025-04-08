@@ -1,8 +1,6 @@
 "use client"
 
-import type React from "react"
-
-import { useState } from "react"
+import React, { Suspense, useState } from "react"
 import Link from "next/link"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -14,7 +12,7 @@ import { BottomNavigation } from "@/components/bottom-navigation"
 // Import the CelebrationAnimation component
 import { CelebrationAnimation } from "@/components/ui/celebration-animation"
 
-export default function ChangePassword() {
+function ChangePasswordContent() {
   const [isLoading, setIsLoading] = useState(false)
   const [status, setStatus] = useState<null | "success" | "error">(null)
   const [showCurrentPassword, setShowCurrentPassword] = useState(false)
@@ -44,7 +42,6 @@ export default function ChangePassword() {
     }
   }
 
-  // Update the handleSubmit function
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
@@ -82,7 +79,6 @@ export default function ChangePassword() {
   const getPasswordStrengthColor = () => {
     switch (passwordStrength) {
       case 0:
-        return "bg-red-500"
       case 1:
         return "bg-red-500"
       case 2:
@@ -119,7 +115,9 @@ export default function ChangePassword() {
         <Card>
           <CardHeader>
             <CardTitle>Update Your Password</CardTitle>
-            <CardDescription>Choose a strong password to protect your account</CardDescription>
+            <CardDescription>
+              Choose a strong password to protect your account
+            </CardDescription>
           </CardHeader>
           <form onSubmit={handleSubmit}>
             <CardContent className="space-y-4">
@@ -149,7 +147,9 @@ export default function ChangePassword() {
                     ) : (
                       <Eye className="h-4 w-4 text-gray-500" />
                     )}
-                    <span className="sr-only">{showCurrentPassword ? "Hide password" : "Show password"}</span>
+                    <span className="sr-only">
+                      {showCurrentPassword ? "Hide password" : "Show password"}
+                    </span>
                   </Button>
                 </div>
               </div>
@@ -180,15 +180,21 @@ export default function ChangePassword() {
                     ) : (
                       <Eye className="h-4 w-4 text-gray-500" />
                     )}
-                    <span className="sr-only">{showNewPassword ? "Hide password" : "Show password"}</span>
+                    <span className="sr-only">
+                      {showNewPassword ? "Hide password" : "Show password"}
+                    </span>
                   </Button>
                 </div>
 
                 {formData.newPassword && (
                   <div className="space-y-1">
                     <div className="flex items-center justify-between">
-                      <span className="text-xs text-gray-500">Password Strength:</span>
-                      <span className="text-xs font-medium">{getPasswordStrengthText()}</span>
+                      <span className="text-xs text-gray-500">
+                        Password Strength:
+                      </span>
+                      <span className="text-xs font-medium">
+                        {getPasswordStrengthText()}
+                      </span>
                     </div>
                     <div className="h-1.5 w-full rounded-full bg-gray-200">
                       <div
@@ -219,21 +225,27 @@ export default function ChangePassword() {
                     variant="ghost"
                     size="sm"
                     className="absolute right-1 top-1 h-8 w-8 p-0"
-                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    onClick={() =>
+                      setShowConfirmPassword(!showConfirmPassword)
+                    }
                   >
                     {showConfirmPassword ? (
                       <EyeOff className="h-4 w-4 text-gray-500" />
                     ) : (
                       <Eye className="h-4 w-4 text-gray-500" />
                     )}
-                    <span className="sr-only">{showConfirmPassword ? "Hide password" : "Show password"}</span>
+                    <span className="sr-only">
+                      {showConfirmPassword ? "Hide password" : "Show password"}
+                    </span>
                   </Button>
                 </div>
 
                 {formData.newPassword &&
                   formData.confirmPassword &&
                   formData.newPassword !== formData.confirmPassword && (
-                    <p className="text-xs text-red-600">Passwords do not match</p>
+                    <p className="text-xs text-red-600">
+                      Passwords do not match
+                    </p>
                   )}
               </div>
 
@@ -243,7 +255,9 @@ export default function ChangePassword() {
                     <Shield className="h-5 w-5 text-blue-600" />
                   </div>
                   <div className="ml-3">
-                    <h3 className="font-medium text-blue-800">Password Requirements</h3>
+                    <h3 className="font-medium text-blue-800">
+                      Password Requirements
+                    </h3>
                     <ul className="mt-1 list-disc pl-5">
                       <li>At least 8 characters long</li>
                       <li>Include at least one uppercase letter</li>
@@ -258,7 +272,9 @@ export default function ChangePassword() {
                 <Alert className="bg-green-50 text-green-800">
                   <CheckCircle className="h-4 w-4" />
                   <AlertTitle>Password Updated!</AlertTitle>
-                  <AlertDescription>Your password has been changed successfully.</AlertDescription>
+                  <AlertDescription>
+                    Your password has been changed successfully.
+                  </AlertDescription>
                 </Alert>
               )}
 
@@ -267,7 +283,8 @@ export default function ChangePassword() {
                   <Info className="h-4 w-4" />
                   <AlertTitle>Error</AlertTitle>
                   <AlertDescription>
-                    There was a problem updating your password. Please make sure your passwords match and try again.
+                    There was a problem updating your password. Please make
+                    sure your passwords match and try again.
                   </AlertDescription>
                 </Alert>
               )}
@@ -276,7 +293,10 @@ export default function ChangePassword() {
               <Button
                 type="submit"
                 className="w-full bg-primary hover:bg-primary-600 text-white"
-                disabled={isLoading || formData.newPassword !== formData.confirmPassword}
+                disabled={
+                  isLoading ||
+                  formData.newPassword !== formData.confirmPassword
+                }
               >
                 {isLoading ? "Updating..." : "Update Password"}
               </Button>
@@ -293,3 +313,16 @@ export default function ChangePassword() {
   )
 }
 
+export default function ChangePassword() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex min-h-screen items-center justify-center bg-gray-50">
+          <p className="text-gray-500">Loading...</p>
+        </div>
+      }
+    >
+      <ChangePasswordContent />
+    </Suspense>
+  )
+}
