@@ -47,7 +47,7 @@ export default function Profile() {
   }
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<div>Loading profile...</div>}>
       <div className="flex min-h-screen flex-col bg-gray-50">
         <CelebrationAnimation
           show={showCelebration}
