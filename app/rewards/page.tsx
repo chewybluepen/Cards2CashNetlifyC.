@@ -1,12 +1,14 @@
 "use client"
 
-import { useState } from "react"
-import Link from "next/link"
-import { Card, CardContent } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Progress } from "@/components/ui/progress"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+export const dynamic = "force-dynamic";
+
+import { useState } from "react";
+import Link from "next/link";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   ArrowLeft,
   Gift,
@@ -19,10 +21,10 @@ import {
   Plus,
   ChevronRight,
   Info,
-} from "lucide-react"
-import { BottomNavigation } from "@/components/bottom-navigation"
-import { FinancialPattern } from "@/components/financial-pattern"
-import { toast } from "@/components/ui/use-toast"
+} from "lucide-react";
+import { BottomNavigation } from "@/components/bottom-navigation";
+import { FinancialPattern } from "@/components/financial-pattern";
+import { toast } from "@/components/ui/use-toast";
 
 // Mock rewards data with updated dates (after March 27, 2025)
 const rewardsData = {
@@ -71,37 +73,37 @@ const rewardsData = {
       icon: Utensils,
     },
   ],
-}
+};
 
 const tiers = [
   { name: "Bronze", points: 0, icon: Star },
   { name: "Silver", points: 2500, icon: Trophy },
   { name: "Gold", points: 5000, icon: Crown },
-]
+];
 
 export default function Rewards() {
-  const [activeTab, setActiveTab] = useState("available")
+  const [activeTab, setActiveTab] = useState("available");
 
   const getCurrentTier = () => {
     return tiers.reduce((prev, curr) => {
-      if (rewardsData.points >= curr.points) return curr
-      return prev
-    })
-  }
+      if (rewardsData.points >= curr.points) return curr;
+      return prev;
+    });
+  };
 
   const handleViewReward = (id: number) => {
     toast({
       title: "Viewing Reward",
       description: "Loading reward details...",
       variant: "default",
-    })
-  }
+    });
+  };
 
-  const currentTier = getCurrentTier()
-  const nextTier = tiers.find((tier) => tier.points > rewardsData.points)
+  const currentTier = getCurrentTier();
+  const nextTier = tiers.find((tier) => tier.points > rewardsData.points);
   const progress = nextTier
     ? ((rewardsData.points - currentTier.points) / (nextTier.points - currentTier.points)) * 100
-    : 100
+    : 100;
 
   return (
     <div className="flex min-h-screen flex-col bg-gray-50">
@@ -172,7 +174,9 @@ export default function Rewards() {
                     </div>
                     <div className="flex-1">
                       <h3 className="font-medium">{reward.title}</h3>
-                      <p className="text-sm text-gray-500">Expires {new Date(reward.expires).toLocaleDateString()}</p>
+                      <p className="text-sm text-gray-500">
+                        Expires {new Date(reward.expires).toLocaleDateString()}
+                      </p>
                     </div>
                     <div className="flex items-center">
                       <span className="mr-2 font-medium text-purple-600">{reward.points} Points</span>
@@ -218,6 +222,5 @@ export default function Rewards() {
 
       <BottomNavigation />
     </div>
-  )
+  );
 }
-
