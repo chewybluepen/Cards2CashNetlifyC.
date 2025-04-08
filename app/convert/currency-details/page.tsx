@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import React, { Suspense, useState, useEffect } from "react"
 import Link from "next/link"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -8,7 +8,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { ArrowLeft, ArrowRight, Info, RefreshCw } from "lucide-react"
 import { BottomNavigation } from "@/components/bottom-navigation"
 
-export default function CurrencyDetails() {
+function CurrencyDetailsContent() {
   const [isLoading, setIsLoading] = useState(true)
   const [currencyData, setCurrencyData] = useState<any>(null)
   const [error, setError] = useState<string | null>(null)
@@ -123,7 +123,9 @@ export default function CurrencyDetails() {
                 Refresh
               </Button>
             </div>
-            <CardDescription>Last updated: {new Date(currencyData.lastUpdated).toLocaleString()}</CardDescription>
+            <CardDescription>
+              Last updated: {new Date(currencyData.lastUpdated).toLocaleString()}
+            </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex items-center justify-center space-x-4">
@@ -162,7 +164,9 @@ export default function CurrencyDetails() {
               <div className="flex h-full flex-col justify-between">
                 {currencyData.historicalRates.map((rate: any, index: number) => (
                   <div key={index} className="flex items-center justify-between">
-                    <span className="text-sm text-gray-500">{new Date(rate.date).toLocaleDateString()}</span>
+                    <span className="text-sm text-gray-500">
+                      {new Date(rate.date).toLocaleDateString()}
+                    </span>
                     <div className="flex flex-1 items-center px-4">
                       <div
                         className="h-2 bg-blue-500"
@@ -189,19 +193,27 @@ export default function CurrencyDetails() {
             <div className="grid grid-cols-2 gap-4">
               <div className="rounded-md bg-gray-50 p-3 text-center">
                 <p className="text-sm text-gray-500">1,000 GYD</p>
-                <p className="text-lg font-medium">{(1000 * currencyData.currentRate).toFixed(2)} USD</p>
+                <p className="text-lg font-medium">
+                  {(1000 * currencyData.currentRate).toFixed(2)} USD
+                </p>
               </div>
               <div className="rounded-md bg-gray-50 p-3 text-center">
                 <p className="text-sm text-gray-500">5,000 GYD</p>
-                <p className="text-lg font-medium">{(5000 * currencyData.currentRate).toFixed(2)} USD</p>
+                <p className="text-lg font-medium">
+                  {(5000 * currencyData.currentRate).toFixed(2)} USD
+                </p>
               </div>
               <div className="rounded-md bg-gray-50 p-3 text-center">
                 <p className="text-sm text-gray-500">10,000 GYD</p>
-                <p className="text-lg font-medium">{(10000 * currencyData.currentRate).toFixed(2)} USD</p>
+                <p className="text-lg font-medium">
+                  {(10000 * currencyData.currentRate).toFixed(2)} USD
+                </p>
               </div>
               <div className="rounded-md bg-gray-50 p-3 text-center">
                 <p className="text-sm text-gray-500">50,000 GYD</p>
-                <p className="text-lg font-medium">{(50000 * currencyData.currentRate).toFixed(2)} USD</p>
+                <p className="text-lg font-medium">
+                  {(50000 * currencyData.currentRate).toFixed(2)} USD
+                </p>
               </div>
             </div>
           </CardContent>
@@ -221,3 +233,10 @@ export default function CurrencyDetails() {
   )
 }
 
+export default function CurrencyDetails() {
+  return (
+    <Suspense fallback={<div className="flex min-h-screen items-center justify-center bg-gray-50"><p className="text-gray-500">Loading...</p></div>}>
+      <CurrencyDetailsContent />
+    </Suspense>
+  )
+}
