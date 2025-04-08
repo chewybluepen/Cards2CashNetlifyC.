@@ -1,7 +1,16 @@
 // app/verify-otp/page.tsx
-"use client"
+"use client";
 
-import dynamic from "next/dynamic"
+import { Suspense } from "react";
+import dynamic from "next/dynamic";
 
-const VerifyOTP = dynamic(() => import("./VerifyOTPContent"), { ssr: false })
-export default VerifyOTP
+// Dynamically import the VerifyOTPContent client component with SSR disabled.
+const VerifyOTP = dynamic(() => import("./VerifyOTPContent"), { ssr: false });
+
+export default function VerifyOTPPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <VerifyOTP />
+    </Suspense>
+  );
+}
