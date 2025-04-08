@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, Suspense } from "react"
 import Link from "next/link"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -70,7 +70,7 @@ const conversionHistory = [
   },
 ]
 
-export default function ConversionHistory() {
+export function ConversionHistory() {
   const [searchTerm, setSearchTerm] = useState("")
   const [filterCurrency, setFilterCurrency] = useState("all")
   const [filteredHistory, setFilteredHistory] = useState(conversionHistory)
@@ -78,10 +78,10 @@ export default function ConversionHistory() {
   useEffect(() => {
     // Filter history based on search term and filter currency
     const filtered = conversionHistory.filter((conversion) => {
+      const lowerCaseSearch = searchTerm.toLowerCase()
       const matchesSearch =
-        conversion.fromCurrency.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        conversion.toCurrency.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        conversion.fromAmount.toString ||
+        conversion.fromCurrency.toLowerCase().includes(lowerCaseSearch) ||
+        conversion.toCurrency.toLowerCase().includes(lowerCaseSearch) ||
         conversion.fromAmount.toString().includes(searchTerm) ||
         conversion.toAmount.toString().includes(searchTerm)
 
@@ -174,7 +174,9 @@ export default function ConversionHistory() {
                             </span>
                           )}
                         </div>
-                        <p className="text-xs text-gray-500">{new Date(conversion.date).toLocaleString()}</p>
+                        <p className="text-xs text-gray-500">
+                          {new Date(conversion.date).toLocaleString()}
+                        </p>
                       </div>
                     </div>
                     <div className="text-right">
@@ -215,3 +217,10 @@ export default function ConversionHistory() {
   )
 }
 
+export default function PageWrapper() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ConversionHistory />
+    </Suspense>
+  )
+}
