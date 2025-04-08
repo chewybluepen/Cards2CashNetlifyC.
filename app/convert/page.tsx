@@ -244,11 +244,17 @@ export default function ConvertPage() {
                       </NetflixDropdown>
                     </div>
                     <Input
-                      id="convertedAmount"
-                      readOnly
-                      value={<CompactCurrencyDisplay amount={Number(convertedAmount)} currency={toCurrency} options={{ style: 'code' }} />}
-                      className="pl-24 bg-[#333333] border-[#444444] text-white h-10"
-                    />
+                        id="convertedAmount"
+                        readOnly
+                        value={
+                          <CompactCurrencyDisplay 
+                            amount={Number(convertedAmount)} 
+                            currency={toCurrency} 
+                            options={{ style: 'code' }} 
+                          />
+                        }
+                        className="pl-24 bg-[#333333] border-[#444444] text-white h-10"
+                      />
                   </div>
                 </div>
               </div>
