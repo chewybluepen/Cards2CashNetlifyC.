@@ -258,18 +258,18 @@ export default function ConvertPage() {
                 <p>
                   1 {fromCurrencyData.code} ={" "}
                   <CompactCurrencyDisplay 
-                    amount={
-                      exchangeRates[fromCurrency]?.[toCurrency] ||
-                      (fromCurrency !== "USD" && toCurrency !== "USD"
-                        ? (
-                            (exchangeRates[fromCurrency]?.["USD"] || 1 / (exchangeRates["USD"]?.[fromCurrency] || 1)) *
-                            (exchangeRates["USD"]?.[toCurrency] || 1 / (exchangeRates[toCurrency]?.["USD"] || 1))
-                          )
-                        : 1.0000
-                    }
-                    currency={toCurrencyData.code}
-                    options={{ style: 'code', decimalPlaces: 4 }}
-                  />
+                      amount={
+                        exchangeRates[fromCurrency]?.[toCurrency] ||
+                        (fromCurrency !== "USD" && toCurrency !== "USD"
+                          ? (
+                              (exchangeRates[fromCurrency]?.["USD"] || 1 / (exchangeRates["USD"]?.[fromCurrency] || 1)) *
+                              (exchangeRates["USD"]?.[toCurrency] || 1 / (exchangeRates[toCurrency]?.["USD"] || 1))
+                            )
+                          : 1.0000
+                      }
+                      currency={toCurrencyData.code}
+                      options={{ style: 'code', decimalPlaces: 4 }}
+                    />
                 </p>
                 <p className="mt-2">Last updated: March 27, 2025</p>
               </div>
