@@ -1,8 +1,6 @@
 "use client"
 
-import type React from "react"
-
-import { useState } from "react"
+import React, { useState, Suspense } from "react"
 import Link from "next/link"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -76,141 +74,142 @@ export default function AddBankAccount() {
       </header>
 
       <main className="flex-1 p-4 pb-20">
-        <Card>
-          <CardHeader>
-            <CardTitle>Bank Account Details</CardTitle>
-            <CardDescription>Link a bank account to your Cards2Cash account</CardDescription>
-          </CardHeader>
-          <form onSubmit={handleSubmit}>
-            <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="bankName">Bank Name</Label>
-                <Select value={formData.bankName} onValueChange={(value) => handleSelectChange("bankName", value)}>
-                  <SelectTrigger id="bankName">
-                    <SelectValue placeholder="Select your bank" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="republic">Republic Bank</SelectItem>
-                    <SelectItem value="demerara">Demerara Bank</SelectItem>
-                    <SelectItem value="gbti">GBTI</SelectItem>
-                    <SelectItem value="scotia">Scotiabank</SelectItem>
-                    <SelectItem value="citizens">Citizens Bank</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+        <Suspense fallback={<div>Loading...</div>}>
+          <Card>
+            <CardHeader>
+              <CardTitle>Bank Account Details</CardTitle>
+              <CardDescription>Link a bank account to your Cards2Cash account</CardDescription>
+            </CardHeader>
+            <form onSubmit={handleSubmit}>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="bankName">Bank Name</Label>
+                  <Select value={formData.bankName} onValueChange={(value) => handleSelectChange("bankName", value)}>
+                    <SelectTrigger id="bankName">
+                      <SelectValue placeholder="Select your bank" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="republic">Republic Bank</SelectItem>
+                      <SelectItem value="demerara">Demerara Bank</SelectItem>
+                      <SelectItem value="gbti">GBTI</SelectItem>
+                      <SelectItem value="scotia">Scotiabank</SelectItem>
+                      <SelectItem value="citizens">Citizens Bank</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="accountType">Account Type</Label>
-                <Select
-                  value={formData.accountType}
-                  onValueChange={(value) => handleSelectChange("accountType", value)}
-                >
-                  <SelectTrigger id="accountType">
-                    <SelectValue placeholder="Select account type" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="checking">Checking</SelectItem>
-                    <SelectItem value="savings">Savings</SelectItem>
-                    <SelectItem value="business">Business</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+                <div className="space-y-2">
+                  <Label htmlFor="accountType">Account Type</Label>
+                  <Select
+                    value={formData.accountType}
+                    onValueChange={(value) => handleSelectChange("accountType", value)}
+                  >
+                    <SelectTrigger id="accountType">
+                      <SelectValue placeholder="Select account type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="checking">Checking</SelectItem>
+                      <SelectItem value="savings">Savings</SelectItem>
+                      <SelectItem value="business">Business</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="accountNumber">Account Number</Label>
-                <div className="relative">
-                  <Bank className="absolute left-3 top-3 h-4 w-4 text-gray-500" />
+                <div className="space-y-2">
+                  <Label htmlFor="accountNumber">Account Number</Label>
+                  <div className="relative">
+                    <Bank className="absolute left-3 top-3 h-4 w-4 text-gray-500" />
+                    <Input
+                      id="accountNumber"
+                      name="accountNumber"
+                      className="pl-10"
+                      placeholder="Enter your account number"
+                      value={formData.accountNumber}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="routingNumber">Routing Number (Optional)</Label>
                   <Input
-                    id="accountNumber"
-                    name="accountNumber"
-                    className="pl-10"
-                    placeholder="Enter your account number"
-                    value={formData.accountNumber}
+                    id="routingNumber"
+                    name="routingNumber"
+                    placeholder="Enter routing number if applicable"
+                    value={formData.routingNumber}
+                    onChange={handleChange}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="accountHolderName">Account Holder Name</Label>
+                  <Input
+                    id="accountHolderName"
+                    name="accountHolderName"
+                    placeholder="Enter the name on the account"
+                    value={formData.accountHolderName}
                     onChange={handleChange}
                     required
                   />
                 </div>
-              </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="routingNumber">Routing Number (Optional)</Label>
-                <Input
-                  id="routingNumber"
-                  name="routingNumber"
-                  placeholder="Enter routing number if applicable"
-                  value={formData.routingNumber}
-                  onChange={handleChange}
-                />
-              </div>
+                <div className="flex items-center space-x-2">
+                  <Checkbox id="setAsDefault" checked={formData.setAsDefault} onCheckedChange={handleCheckboxChange} />
+                  <label
+                    htmlFor="setAsDefault"
+                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  >
+                    Set as default payment method
+                  </label>
+                </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="accountHolderName">Account Holder Name</Label>
-                <Input
-                  id="accountHolderName"
-                  name="accountHolderName"
-                  placeholder="Enter the name on the account"
-                  value={formData.accountHolderName}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-
-              <div className="flex items-center space-x-2">
-                <Checkbox id="setAsDefault" checked={formData.setAsDefault} onCheckedChange={handleCheckboxChange} />
-                <label
-                  htmlFor="setAsDefault"
-                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                >
-                  Set as default payment method
-                </label>
-              </div>
-
-              <div className="rounded-md bg-blue-50 p-3 text-sm text-blue-800">
-                <div className="flex">
-                  <div className="flex-shrink-0">
-                    <Lock className="h-5 w-5 text-blue-600" />
-                  </div>
-                  <div className="ml-3">
-                    <p>
-                      Your bank account information is encrypted and securely stored. We use industry-standard security
-                      measures to protect your data.
-                    </p>
+                <div className="rounded-md bg-blue-50 p-3 text-sm text-blue-800">
+                  <div className="flex">
+                    <div className="flex-shrink-0">
+                      <Lock className="h-5 w-5 text-blue-600" />
+                    </div>
+                    <div className="ml-3">
+                      <p>
+                        Your bank account information is encrypted and securely stored. We use industry-standard security
+                        measures to protect your data.
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              {status === "success" && (
-                <Alert className="bg-green-50 text-green-800">
-                  <CheckCircle className="h-4 w-4" />
-                  <AlertTitle>Bank Account Added Successfully!</AlertTitle>
-                  <AlertDescription>Your bank account has been linked to your Cards2Cash account.</AlertDescription>
-                </Alert>
-              )}
+                {status === "success" && (
+                  <Alert className="bg-green-50 text-green-800">
+                    <CheckCircle className="h-4 w-4" />
+                    <AlertTitle>Bank Account Added Successfully!</AlertTitle>
+                    <AlertDescription>Your bank account has been linked to your Cards2Cash account.</AlertDescription>
+                  </Alert>
+                )}
 
-              {status === "error" && (
-                <Alert variant="destructive">
-                  <Info className="h-4 w-4" />
-                  <AlertTitle>Error</AlertTitle>
-                  <AlertDescription>
-                    There was a problem adding your bank account. Please check your details and try again.
-                  </AlertDescription>
-                </Alert>
-              )}
-            </CardContent>
-            <CardFooter className="flex flex-col space-y-2">
-              <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700" disabled={isLoading}>
-                {isLoading ? "Adding Account..." : "Add Bank Account"}
-              </Button>
-              <Button type="button" variant="outline" className="w-full" asChild>
-                <Link href="/payment-methods">Cancel</Link>
-              </Button>
-            </CardFooter>
-          </form>
-        </Card>
+                {status === "error" && (
+                  <Alert variant="destructive">
+                    <Info className="h-4 w-4" />
+                    <AlertTitle>Error</AlertTitle>
+                    <AlertDescription>
+                      There was a problem adding your bank account. Please check your details and try again.
+                    </AlertDescription>
+                  </Alert>
+                )}
+              </CardContent>
+              <CardFooter className="flex flex-col space-y-2">
+                <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700" disabled={isLoading}>
+                  {isLoading ? "Adding Account..." : "Add Bank Account"}
+                </Button>
+                <Button type="button" variant="outline" className="w-full" asChild>
+                  <Link href="/payment-methods">Cancel</Link>
+                </Button>
+              </CardFooter>
+            </form>
+          </Card>
+        </Suspense>
       </main>
 
       <BottomNavigation />
     </div>
   )
 }
-
