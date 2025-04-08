@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { Suspense } from "react"
 import Link from "next/link"
 import { ArrowLeft, Plus, Star, StarOff, Info, Globe, Search, Flag } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -174,7 +175,7 @@ const providers = [
   },
 ]
 
-export default function ProvidersPage() {
+function ProvidersPageContent() {
   const [searchTerm, setSearchTerm] = useState("")
   const [providersList, setProvidersList] = useState(providers)
   const [selectedProvider, setSelectedProvider] = useState<string | null>(null)
@@ -182,13 +183,17 @@ export default function ProvidersPage() {
 
   const toggleFavorite = (id: string) => {
     setProvidersList((prevList) =>
-      prevList.map((provider) => (provider.id === id ? { ...provider, favorite: !provider.favorite } : provider)),
+      prevList.map((provider) =>
+        provider.id === id ? { ...provider, favorite: !provider.favorite } : provider,
+      ),
     )
   }
 
   const toggleEnabled = (id: string) => {
     setProvidersList((prevList) =>
-      prevList.map((provider) => (provider.id === id ? { ...provider, enabled: !provider.enabled } : provider)),
+      prevList.map((provider) =>
+        provider.id === id ? { ...provider, enabled: !provider.enabled } : provider,
+      ),
     )
   }
 
@@ -321,7 +326,9 @@ export default function ProvidersPage() {
                         variant="ghost"
                         size="icon"
                         className="text-white hover:bg-[#333333]"
-                        onClick={() => setSelectedProvider(provider.id === selectedProvider ? null : provider.id)}
+                        onClick={() =>
+                          setSelectedProvider(provider.id === selectedProvider ? null : provider.id)
+                        }
                       >
                         <Info className="h-5 w-5" />
                       </Button>
@@ -349,10 +356,10 @@ export default function ProvidersPage() {
                             {provider.country === "Guyana"
                               ? "GYD"
                               : provider.country === "Canada"
-                                ? "CAD"
-                                : provider.country === "USA"
-                                  ? "USD"
-                                  : "EUR"}{" "}
+                              ? "CAD"
+                              : provider.country === "USA"
+                              ? "USD"
+                              : "EUR"}{" "}
                             {provider.minAmount.toLocaleString()}
                           </p>
                         </div>
@@ -362,10 +369,10 @@ export default function ProvidersPage() {
                             {provider.country === "Guyana"
                               ? "GYD"
                               : provider.country === "Canada"
-                                ? "CAD"
-                                : provider.country === "USA"
-                                  ? "USD"
-                                  : "EUR"}{" "}
+                              ? "CAD"
+                              : provider.country === "USA"
+                              ? "USD"
+                              : "EUR"}{" "}
                             {provider.maxAmount.toLocaleString()}
                           </p>
                         </div>
@@ -393,7 +400,9 @@ export default function ProvidersPage() {
                 <CardContent className="flex flex-col items-center justify-center p-6 text-center">
                   <Search className="mb-2 h-8 w-8 text-gray-400" />
                   <h3 className="text-lg font-medium text-white">No providers found</h3>
-                  <p className="text-sm text-gray-400">Try adjusting your search to find what you're looking for.</p>
+                  <p className="text-sm text-gray-400">
+                    Try adjusting your search to find what you're looking for.
+                  </p>
                 </CardContent>
               </Card>
             )}
@@ -445,7 +454,9 @@ export default function ProvidersPage() {
                         variant="ghost"
                         size="icon"
                         className="text-white hover:bg-[#333333]"
-                        onClick={() => setSelectedProvider(provider.id === selectedProvider ? null : provider.id)}
+                        onClick={() =>
+                          setSelectedProvider(provider.id === selectedProvider ? null : provider.id)
+                        }
                       >
                         <Info className="h-5 w-5" />
                       </Button>
@@ -473,10 +484,10 @@ export default function ProvidersPage() {
                             {provider.country === "Guyana"
                               ? "GYD"
                               : provider.country === "Canada"
-                                ? "CAD"
-                                : provider.country === "USA"
-                                  ? "USD"
-                                  : "EUR"}{" "}
+                              ? "CAD"
+                              : provider.country === "USA"
+                              ? "USD"
+                              : "EUR"}{" "}
                             {provider.minAmount.toLocaleString()}
                           </p>
                         </div>
@@ -486,10 +497,10 @@ export default function ProvidersPage() {
                             {provider.country === "Guyana"
                               ? "GYD"
                               : provider.country === "Canada"
-                                ? "CAD"
-                                : provider.country === "USA"
-                                  ? "USD"
-                                  : "EUR"}{" "}
+                              ? "CAD"
+                              : provider.country === "USA"
+                              ? "USD"
+                              : "EUR"}{" "}
                             {provider.maxAmount.toLocaleString()}
                           </p>
                         </div>
@@ -517,7 +528,9 @@ export default function ProvidersPage() {
                 <CardContent className="flex flex-col items-center justify-center p-6 text-center">
                   <Search className="mb-2 h-8 w-8 text-gray-400" />
                   <h3 className="text-lg font-medium text-white">No providers found</h3>
-                  <p className="text-sm text-gray-400">Try adjusting your search to find what you're looking for.</p>
+                  <p className="text-sm text-gray-400">
+                    Try adjusting your search to find what you're looking for.
+                  </p>
                 </CardContent>
               </Card>
             )}
@@ -563,7 +576,9 @@ export default function ProvidersPage() {
                         variant="ghost"
                         size="icon"
                         className="text-white hover:bg-[#333333]"
-                        onClick={() => setSelectedProvider(provider.id === selectedProvider ? null : provider.id)}
+                        onClick={() =>
+                          setSelectedProvider(provider.id === selectedProvider ? null : provider.id)
+                        }
                       >
                         <Info className="h-5 w-5" />
                       </Button>
@@ -591,10 +606,10 @@ export default function ProvidersPage() {
                             {provider.country === "Guyana"
                               ? "GYD"
                               : provider.country === "Canada"
-                                ? "CAD"
-                                : provider.country === "USA"
-                                  ? "USD"
-                                  : "EUR"}{" "}
+                              ? "CAD"
+                              : provider.country === "USA"
+                              ? "USD"
+                              : "EUR"}{" "}
                             {provider.minAmount.toLocaleString()}
                           </p>
                         </div>
@@ -604,10 +619,10 @@ export default function ProvidersPage() {
                             {provider.country === "Guyana"
                               ? "GYD"
                               : provider.country === "Canada"
-                                ? "CAD"
-                                : provider.country === "USA"
-                                  ? "USD"
-                                  : "EUR"}{" "}
+                              ? "CAD"
+                              : provider.country === "USA"
+                              ? "USD"
+                              : "EUR"}{" "}
                             {provider.maxAmount.toLocaleString()}
                           </p>
                         </div>
@@ -635,7 +650,9 @@ export default function ProvidersPage() {
                 <CardContent className="flex flex-col items-center justify-center p-6 text-center">
                   <Star className="mb-2 h-8 w-8 text-gray-400" />
                   <h3 className="text-lg font-medium text-white">No favorite providers</h3>
-                  <p className="text-sm text-gray-400">Add providers to your favorites for quick access.</p>
+                  <p className="text-sm text-gray-400">
+                    Add providers to your favorites for quick access.
+                  </p>
                 </CardContent>
               </Card>
             )}
@@ -657,3 +674,16 @@ export default function ProvidersPage() {
   )
 }
 
+export default function ProvidersPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex min-h-screen items-center justify-center bg-[#000000] text-white">
+          Loading Providers...
+        </div>
+      }
+    >
+      <ProvidersPageContent />
+    </Suspense>
+  )
+}
