@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, ChangeEvent } from "react"
+import React, { useState, useEffect, ChangeEvent } from "react"
 import Link from "next/link"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -13,7 +13,14 @@ import { NetflixDropdown, NetflixDropdownItem } from "@/components/ui/netflix-dr
 import { SocialMediaIcons } from "@/components/social-media-icons"
 import { CompactCurrencyDisplay } from "@/components/ui/currency-display"
 
-export default function ConvertPage(): JSX.Element {
+// Define currency interface (adjust based on your actual currency-data)
+interface Currency {
+  code: string;
+  name: string;
+  flag: string;
+}
+
+const ConvertPage: React.FC = () => {
   const [amount, setAmount] = useState<string>("100")
   const [fromCurrency, setFromCurrency] = useState<string>("USD")
   const [toCurrency, setToCurrency] = useState<string>("EUR")
@@ -22,9 +29,9 @@ export default function ConvertPage(): JSX.Element {
   const [convertedAmount, setConvertedAmount] = useState<string>("0")
 
   const filteredCurrencies = currencies.filter(
-    (currency) =>
+    (currency: Currency) =>
       currency.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      currency.code.toLowerCase().includes(searchQuery.toLowerCase()),
+      currency.code.toLowerCase().includes(searchQuery.toLowerCase())
   )
 
   const exchangeRates: Record<string, Record<string, number>> = {
@@ -60,13 +67,11 @@ export default function ConvertPage(): JSX.Element {
     if (exchangeRates[fromCurrency]?.[toCurrency]) {
       const rate = exchangeRates[fromCurrency][toCurrency]
       setConvertedAmount((numAmount * rate).toFixed(2))
-    }
-    else if (fromCurrency !== "USD" && toCurrency !== "USD") {
+    } else if (fromCurrency !== "USD" && toCurrency !== "USD") {
       const toUSD = exchangeRates[fromCurrency]?.["USD"] || 1 / (exchangeRates["USD"]?.[fromCurrency] || 1)
       const fromUSD = exchangeRates["USD"]?.[toCurrency] || 1 / (exchangeRates[toCurrency]?.["USD"] || 1)
       setConvertedAmount((numAmount * toUSD * fromUSD).toFixed(2))
-    }
-    else {
+    } else {
       setConvertedAmount(numAmount.toFixed(2))
     }
   }, [amount, fromCurrency, toCurrency])
@@ -76,8 +81,8 @@ export default function ConvertPage(): JSX.Element {
     setToCurrency(fromCurrency)
   }
 
-  const getCurrencyByCode = (code: string) => {
-    return currencies.find((currency) => currency.code === code) || currencies[0]
+  const getCurrencyByCode = (code: string): Currency => {
+    return currencies.find((currency: Currency) => currency.code === code) || currencies[0]
   }
 
   const fromCurrencyData = getCurrencyByCode(fromCurrency)
@@ -141,7 +146,7 @@ export default function ConvertPage(): JSX.Element {
                             />
                           </div>
                           <div className="max-h-60 overflow-y-auto">
-                            {filteredCurrencies.map((currency) => (
+                            {filteredCurrencies.map((currency: Currency) => (
                               <NetflixDropdownItem
                                 key={currency.code}
                                 onClick={() => {
@@ -220,7 +225,7 @@ export default function ConvertPage(): JSX.Element {
                             />
                           </div>
                           <div className="max-h-60 overflow-y-auto">
-                            {filteredCurrencies.map((currency) => (
+                            {filteredCurrencies.map((currency: Currency) => (
                               <NetflixDropdownItem
                                 key={currency.code}
                                 onClick={() => {
@@ -250,10 +255,10 @@ export default function ConvertPage(): JSX.Element {
                     />
                   </div>
                   <div className="text-white whitespace-nowrap">
-                    <CompactCurrencyDisplay 
-                      amount={Number(convertedAmount)} 
-                      currency={toCurrency} 
-                      options={{ style: 'code' }} 
+                    <CompactCurrencyDisplay
+                      amount={Number(convertedAmount)}
+                      currency={toCurrency}
+                      options={{ style: "code" }}
                     />
                   </div>
                 </div>
@@ -263,18 +268,16 @@ export default function ConvertPage(): JSX.Element {
               <div className="text-center text-[#B3B3B3] text-sm mt-4 pt-2 border-t border-[#333333]">
                 <p>
                   1 {fromCurrencyData.code} ={" "}
-                  <CompactCurrencyDisplay 
+                  <CompactCurrencyDisplay
                     amount={
                       exchangeRates[fromCurrency]?.[toCurrency] ||
                       (fromCurrency !== "USD" && toCurrency !== "USD"
-                        ? (
-                            (exchangeRates[fromCurrency]?.["USD"] || 1 / (exchangeRates["USD"]?.[fromCurrency] || 1)) *
-                            (exchangeRates["USD"]?.[toCurrency] || 1 / (exchangeRates[toCurrency]?.["USD"] || 1))
-                          )
-                        : 1.0000
+                        ? (exchangeRates[fromCurrency]?.["USD"] || 1 / (exchangeRates["USD"]?.[fromCurrency] || 1)) *
+                          (exchangeRates["USD"]?.[toCurrency] || 1 / (exchangeRates[toCurrency]?.["USD"] || 1))
+                        : 1.0)
                     }
                     currency={toCurrencyData.code}
-                    options={{ style: 'code', decimalPlaces: 4 }}
+                    options={{ style: "code", decimalPlaces: 4 }}
                   />
                 </p>
                 <p className="mt-2">Last updated: March 27, 2025</p>
@@ -310,3 +313,5 @@ export default function ConvertPage(): JSX.Element {
     </div>
   )
 }
+
+export default ConvertPage
