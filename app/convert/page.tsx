@@ -1,34 +1,37 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, Suspense } from "react"
+import dynamic from "next/dynamic"
 import Link from "next/link"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { ArrowDown, ArrowLeft, ChevronDown, History, Search } from "lucide-react"
-import { BottomNavigation } from "@/components/bottom-navigation"
 import { currencies } from "@/lib/currency-data"
 import { NetflixDropdown, NetflixDropdownItem } from "@/components/ui/netflix-dropdown"
 import { SocialMediaIcons } from "@/components/social-media-icons"
 import { CompactCurrencyDisplay } from "@/components/ui/currency-display"
 
-export default function ConvertPage() {
+// Dynamically import BottomNavigation with SSR disabled
+const BottomNavigation = dynamic(
+  () => import("@/components/bottom-navigation"),
+  { ssr: false }
+)
+
+const ConvertContent = () => {
   const [amount, setAmount] = useState<string>("100")
   const [fromCurrency, setFromCurrency] = useState<string>("USD")
   const [toCurrency, setToCurrency] = useState<string>("EUR")
   const [searchQuery, setSearchQuery] = useState<string>("")
-  const [dropdownOpen, setDropdownOpen] = useState<"from" | "to" | null>(null)
   const [convertedAmount, setConvertedAmount] = useState<string>("0")
 
-  // Filter currencies based on search query
   const filteredCurrencies = currencies.filter(
     (currency) =>
       currency.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       currency.code.toLowerCase().includes(searchQuery.toLowerCase()),
   )
 
-  // Mock exchange rates
   const exchangeRates: Record<string, Record<string, number>> = {
     USD: {
       EUR: 0.85,
@@ -54,37 +57,30 @@ export default function ConvertPage() {
       BRL: 6.13,
       RUB: 86.7,
     },
-    // Add more exchange rates as needed
   }
 
-  // Calculate conversion
   useEffect(() => {
     const numAmount = Number.parseFloat(amount) || 0
 
-    // Direct conversion if available
     if (exchangeRates[fromCurrency]?.[toCurrency]) {
       const rate = exchangeRates[fromCurrency][toCurrency]
       setConvertedAmount((numAmount * rate).toFixed(2))
     }
-    // USD as intermediate if direct conversion not available
     else if (fromCurrency !== "USD" && toCurrency !== "USD") {
       const toUSD = exchangeRates[fromCurrency]?.["USD"] || 1 / (exchangeRates["USD"]?.[fromCurrency] || 1)
       const fromUSD = exchangeRates["USD"]?.[toCurrency] || 1 / (exchangeRates[toCurrency]?.["USD"] || 1)
       setConvertedAmount((numAmount * toUSD * fromUSD).toFixed(2))
     }
-    // Fallback
     else {
       setConvertedAmount(numAmount.toFixed(2))
     }
   }, [amount, fromCurrency, toCurrency])
 
-  // Swap currencies
   const handleSwapCurrencies = () => {
     setFromCurrency(toCurrency)
     setToCurrency(fromCurrency)
   }
 
-  // Find currency by code
   const getCurrencyByCode = (code: string) => {
     return currencies.find((currency) => currency.code === code) || currencies[0]
   }
@@ -244,11 +240,17 @@ export default function ConvertPage() {
                       </NetflixDropdown>
                     </div>
                     <Input
-                      id="convertedAmount"
-                      readOnly
-                      value={convertedAmount}
-                      className="pl-24 bg-[#333333] border-[#444444] text-white h-10"
-                    />
+                        id="convertedAmount"
+                        readOnly
+                        value={
+                          <CompactCurrencyDisplay 
+                            amount={Number(convertedAmount)} 
+                            currency={toCurrency} 
+                            options={{ style: 'code' }} 
+                          />
+                        }
+                        className="pl-24 bg-[#333333] border-[#444444] text-white h-10"
+                      />
                   </div>
                 </div>
               </div>
@@ -258,18 +260,19 @@ export default function ConvertPage() {
                 <p>
                   1 {fromCurrencyData.code} ={" "}
                   <CompactCurrencyDisplay 
-                    amount={
-                      exchangeRates[fromCurrency]?.[toCurrency] ||
-                      (fromCurrency !== "USD" && toCurrency !== "USD"
-                        ? (
-                            (exchangeRates[fromCurrency]?.["USD"] || 1 / (exchangeRates["USD"]?.[fromCurrency] || 1)) *
-                            (exchangeRates["USD"]?.[toCurrency] || 1 / (exchangeRates[toCurrency]?.["USD"] || 1))
-                          )
-                        : 1.0000)
-                    }
-                    currency={toCurrencyData.code}
-                    options={{ style: 'code', decimalPlaces: 4 }}
-                  />
+                      amount={
+                        exchangeRates[fromCurrency]?.[toCurrency] ||
+                        (fromCurrency !== "USD" && toCurrency !== "USD"
+                          ? (
+                              (exchangeRates[fromCurrency]?.["USD"] || 1 / (exchangeRates["USD"]?.[fromCurrency] || 1)) *
+                              (exchangeRates["USD"]?.[toCurrency] || 1 / (exchangeRates[toCurrency]?.["USD"] || 1))
+                            )
+                          : 1.0000
+                      }
+                      currency={toCurrencyData.code}
+                      options={{ style: 'code', decimalPlaces: 4 }}
+                    />
+                  )
                 </p>
                 <p className="mt-2">Last updated: March 27, 2025</p>
               </div>
@@ -302,5 +305,13 @@ export default function ConvertPage() {
 
       <BottomNavigation />
     </div>
+  )
+}
+
+export default function ConvertPage() {
+  return (
+    <Suspense fallback={<div className="flex min-h-screen items-center justify-center">Loading...</div>}>
+      <ConvertContent />
+    </Suspense>
   )
 }
