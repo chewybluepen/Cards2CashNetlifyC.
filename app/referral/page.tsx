@@ -17,22 +17,16 @@ function ReferralProgramContent() {
   const handleCopyCode = () => {
     navigator.clipboard.writeText(referralCode)
     setCopiedCode(true)
-
     toast({
       title: "Referral Code Copied",
       description: "Your referral code has been copied to clipboard.",
       variant: "default",
     })
-
-    // Reset copied state after 2 seconds
-    setTimeout(() => {
-      setCopiedCode(false)
-    }, 2000)
+    setTimeout(() => setCopiedCode(false), 2000)
   }
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(referralLink)
-
     toast({
       title: "Referral Link Copied",
       description: "Your referral link has been copied to clipboard.",
@@ -44,9 +38,7 @@ function ReferralProgramContent() {
     if (navigator.share) {
       navigator.share({
         title: "Join Cards2Cash",
-        text:
-          "Use my referral code to sign up for Cards2Cash and get GYD 500 bonus! Code: " +
-          referralCode,
+        text: "Use my referral code to sign up for Cards2Cash and get GYD 500 bonus! Code: " + referralCode,
         url: referralLink,
       })
     } else {
@@ -239,7 +231,10 @@ function ReferralProgramContent() {
         </div>
       </main>
 
-      <BottomNavigation />
+      {/* Wrap BottomNavigation in its own Suspense boundary */}
+      <Suspense fallback={<div className="p-4 text-center">Loading navigation...</div>}>
+        <BottomNavigation />
+      </Suspense>
     </div>
   )
 }
