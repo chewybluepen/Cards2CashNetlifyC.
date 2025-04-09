@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, ChangeEvent } from "react"
 import Link from "next/link"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -13,7 +13,7 @@ import { NetflixDropdown, NetflixDropdownItem } from "@/components/ui/netflix-dr
 import { SocialMediaIcons } from "@/components/social-media-icons"
 import { CompactCurrencyDisplay } from "@/components/ui/currency-display"
 
-export default function ConvertPage() {
+export default function ConvertPage(): JSX.Element {
   const [amount, setAmount] = useState<string>("100")
   const [fromCurrency, setFromCurrency] = useState<string>("USD")
   const [toCurrency, setToCurrency] = useState<string>("EUR")
@@ -71,7 +71,7 @@ export default function ConvertPage() {
     }
   }, [amount, fromCurrency, toCurrency])
 
-  const handleSwapCurrencies = () => {
+  const handleSwapCurrencies = (): void => {
     setFromCurrency(toCurrency)
     setToCurrency(fromCurrency)
   }
@@ -82,6 +82,14 @@ export default function ConvertPage() {
 
   const fromCurrencyData = getCurrencyByCode(fromCurrency)
   const toCurrencyData = getCurrencyByCode(toCurrency)
+
+  const handleAmountChange = (e: ChangeEvent<HTMLInputElement>): void => {
+    setAmount(e.target.value)
+  }
+
+  const handleSearchChange = (e: ChangeEvent<HTMLInputElement>): void => {
+    setSearchQuery(e.target.value)
+  }
 
   return (
     <div className="flex min-h-screen flex-col bg-[#000000] pt-16 pb-20">
@@ -128,7 +136,7 @@ export default function ConvertPage() {
                             <Input
                               placeholder="Search currencies..."
                               value={searchQuery}
-                              onChange={(e) => setSearchQuery(e.target.value)}
+                              onChange={handleSearchChange}
                               className="pl-10 bg-[#333333] border-[#444444] text-white placeholder:text-[#777777]"
                             />
                           </div>
@@ -159,7 +167,7 @@ export default function ConvertPage() {
                       id="amount"
                       type="number"
                       value={amount}
-                      onChange={(e) => setAmount(e.target.value)}
+                      onChange={handleAmountChange}
                       className="pl-24 bg-[#333333] border-[#444444] text-white h-10"
                     />
                   </div>
@@ -207,7 +215,7 @@ export default function ConvertPage() {
                             <Input
                               placeholder="Search currencies..."
                               value={searchQuery}
-                              onChange={(e) => setSearchQuery(e.target.value)}
+                              onChange={handleSearchChange}
                               className="pl-10 bg-[#333333] border-[#444444] text-white placeholder:text-[#777777]"
                             />
                           </div>
