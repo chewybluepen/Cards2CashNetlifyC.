@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import React, { Suspense, useState } from "react"
 import Link from "next/link"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -9,7 +9,7 @@ import { ArrowLeft, Copy, Gift, Share2, Users, Info } from "lucide-react"
 import { BottomNavigation } from "@/components/bottom-navigation"
 import { toast } from "@/components/ui/use-toast"
 
-export default function ReferralProgram() {
+function ReferralProgramContent() {
   const [copiedCode, setCopiedCode] = useState(false)
   const referralCode = "CARDS2CASH25"
   const referralLink = "https://cards2cash.com/ref/CARDS2CASH25"
@@ -44,7 +44,9 @@ export default function ReferralProgram() {
     if (navigator.share) {
       navigator.share({
         title: "Join Cards2Cash",
-        text: "Use my referral code to sign up for Cards2Cash and get GYD 500 bonus! Code: " + referralCode,
+        text:
+          "Use my referral code to sign up for Cards2Cash and get GYD 500 bonus! Code: " +
+          referralCode,
         url: referralLink,
       })
     } else {
@@ -126,15 +128,21 @@ export default function ReferralProgram() {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex items-start space-x-3">
-              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 text-blue-600">1</div>
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 text-blue-600">
+                1
+              </div>
               <div>
                 <h3 className="font-medium">Share Your Code</h3>
-                <p className="text-sm text-gray-600">Share your unique referral code with friends and family.</p>
+                <p className="text-sm text-gray-600">
+                  Share your unique referral code with friends and family.
+                </p>
               </div>
             </div>
 
             <div className="flex items-start space-x-3">
-              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 text-blue-600">2</div>
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 text-blue-600">
+                2
+              </div>
               <div>
                 <h3 className="font-medium">Friend Signs Up</h3>
                 <p className="text-sm text-gray-600">
@@ -144,7 +152,9 @@ export default function ReferralProgram() {
             </div>
 
             <div className="flex items-start space-x-3">
-              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 text-blue-600">3</div>
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 text-blue-600">
+                3
+              </div>
               <div>
                 <h3 className="font-medium">Both Get Rewarded</h3>
                 <p className="text-sm text-gray-600">
@@ -234,3 +244,16 @@ export default function ReferralProgram() {
   )
 }
 
+export default function ReferralProgram() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex min-h-screen items-center justify-center bg-gray-50">
+          <p className="text-gray-500">Loading...</p>
+        </div>
+      }
+    >
+      <ReferralProgramContent />
+    </Suspense>
+  )
+}
