@@ -1,29 +1,24 @@
 "use client"
 
-import { useState, useEffect, Suspense } from "react"
-import dynamic from "next/dynamic"
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { ArrowDown, ArrowLeft, ChevronDown, History, Search } from "lucide-react"
+import { BottomNavigation } from "@/components/bottom-navigation"
 import { currencies } from "@/lib/currency-data"
 import { NetflixDropdown, NetflixDropdownItem } from "@/components/ui/netflix-dropdown"
 import { SocialMediaIcons } from "@/components/social-media-icons"
 import { CompactCurrencyDisplay } from "@/components/ui/currency-display"
 
-// Dynamically import BottomNavigation with SSR disabled
-const BottomNavigation = dynamic(
-  () => import("@/components/bottom-navigation"),
-  { ssr: false }
-)
-
-const ConvertContent = () => {
+export default function ConvertPage() {
   const [amount, setAmount] = useState<string>("100")
   const [fromCurrency, setFromCurrency] = useState<string>("USD")
   const [toCurrency, setToCurrency] = useState<string>("EUR")
   const [searchQuery, setSearchQuery] = useState<string>("")
+  const [dropdownOpen, setDropdownOpen] = useState<"from" | "to" | null>(null)
   const [convertedAmount, setConvertedAmount] = useState<string>("0")
 
   const filteredCurrencies = currencies.filter(
@@ -189,7 +184,7 @@ const ConvertContent = () => {
                 <Label htmlFor="convertedAmount" className="text-[#B3B3B3] mb-2 block">
                   Converted Amount
                 </Label>
-                <div className="flex space-x-2">
+                <div className="flex items-center gap-2">
                   <div className="relative flex-1">
                     <div className="absolute left-0 top-0 z-10">
                       <NetflixDropdown
@@ -240,17 +235,18 @@ const ConvertContent = () => {
                       </NetflixDropdown>
                     </div>
                     <Input
-                        id="convertedAmount"
-                        readOnly
-                        value={
-                          <CompactCurrencyDisplay 
-                            amount={Number(convertedAmount)} 
-                            currency={toCurrency} 
-                            options={{ style: 'code' }} 
-                          />
-                        }
-                        className="pl-24 bg-[#333333] border-[#444444] text-white h-10"
-                      />
+                      id="convertedAmount"
+                      readOnly
+                      value={convertedAmount}
+                      className="pl-24 bg-[#333333] border-[#444444] text-white h-10"
+                    />
+                  </div>
+                  <div className="text-white whitespace-nowrap">
+                    <CompactCurrencyDisplay 
+                      amount={Number(convertedAmount)} 
+                      currency={toCurrency} 
+                      options={{ style: 'code' }} 
+                    />
                   </div>
                 </div>
               </div>
@@ -260,19 +256,18 @@ const ConvertContent = () => {
                 <p>
                   1 {fromCurrencyData.code} ={" "}
                   <CompactCurrencyDisplay 
-                      amount={
-                        exchangeRates[fromCurrency]?.[toCurrency] ||
-                        (fromCurrency !== "USD" && toCurrency !== "USD"
-                          ? (
-                              (exchangeRates[fromCurrency]?.["USD"] || 1 / (exchangeRates["USD"]?.[fromCurrency] || 1)) *
-                              (exchangeRates["USD"]?.[toCurrency] || 1 / (exchangeRates[toCurrency]?.["USD"] || 1))
-                            )
-                          : 1.0000
-                      }
-                      currency={toCurrencyData.code}
-                      options={{ style: 'code', decimalPlaces: 4 }}
-                    />
-                  )
+                    amount={
+                      exchangeRates[fromCurrency]?.[toCurrency] ||
+                      (fromCurrency !== "USD" && toCurrency !== "USD"
+                        ? (
+                            (exchangeRates[fromCurrency]?.["USD"] || 1 / (exchangeRates["USD"]?.[fromCurrency] || 1)) *
+                            (exchangeRates["USD"]?.[toCurrency] || 1 / (exchangeRates[toCurrency]?.["USD"] || 1))
+                          )
+                        : 1.0000
+                    }
+                    currency={toCurrencyData.code}
+                    options={{ style: 'code', decimalPlaces: 4 }}
+                  />
                 </p>
                 <p className="mt-2">Last updated: March 27, 2025</p>
               </div>
@@ -305,13 +300,5 @@ const ConvertContent = () => {
 
       <BottomNavigation />
     </div>
-  )
-}
-
-export default function ConvertPage() {
-  return (
-    <Suspense fallback={<div className="flex min-h-screen items-center justify-center">Loading...</div>}>
-      <ConvertContent />
-    </Suspense>
   )
 }
