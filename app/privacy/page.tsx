@@ -1,12 +1,19 @@
 "use client"
 
+import { Suspense } from "react"
+import dynamic from "next/dynamic"
 import Link from "next/link"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft } from "lucide-react"
-import { BottomNavigation } from "@/components/bottom-navigation"
 
-export default function PrivacyPolicy() {
+// Dynamically import BottomNavigation with SSR disabled
+const BottomNavigation = dynamic(
+  () => import("@/components/bottom-navigation"),
+  { ssr: false }
+)
+
+const PrivacyPolicyContent = () => {
   return (
     <div className="flex min-h-screen flex-col bg-gray-50">
       <header className="sticky top-0 z-10 bg-white p-4 shadow-sm">
@@ -158,3 +165,10 @@ export default function PrivacyPolicy() {
   )
 }
 
+export default function PrivacyPolicy() {
+  return (
+    <Suspense fallback={<div className="flex min-h-screen items-center justify-center">Loading...</div>}>
+      <PrivacyPolicyContent />
+    </Suspense>
+  )
+}
