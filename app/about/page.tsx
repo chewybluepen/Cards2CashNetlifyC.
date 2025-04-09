@@ -8,6 +8,9 @@ import { Button } from "@/components/ui/button"
 import { ArrowLeft, Globe, Shield, Zap, Users, ExternalLink } from "lucide-react"
 import { BottomNavigation } from "@/components/bottom-navigation"
 
+// Mark the page as dynamic to avoid static prerendering issues if useSearchParams is in a child component
+export const dynamic = "force-dynamic"
+
 function AboutUsContent() {
   return (
     <div className="flex min-h-screen flex-col bg-gray-50">
@@ -144,7 +147,10 @@ function AboutUsContent() {
         </div>
       </main>
 
-      <BottomNavigation />
+      {/* Wrap BottomNavigation in Suspense if it uses useSearchParams */}
+      <Suspense fallback={<div>Loading navigation...</div>}>
+        <BottomNavigation />
+      </Suspense>
     </div>
   )
 }
